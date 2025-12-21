@@ -1,2 +1,4 @@
-backend/node_modules
-db/data
+node_modules/
+db/data/
+*.log
+.DS_Store
