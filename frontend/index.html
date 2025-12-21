@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Aplicación del Laboratorio</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 40px; }
+      input, select, button { margin: 6px 0; }
+      .box { border: 1px solid #ddd; padding: 12px; margin: 12px 0; border-radius: 8px; }
+      pre { background: #f4f4f4; padding: 10px; overflow:auto; }
+      ul { margin-top: 8px; }
+    </style>
+  </head>
+
+  <body>
+    <h1>Aplicación del Laboratorio</h1>
+
+    <div class="box">
+      <h3>Alumnos</h3>
+      <input id="alumnoNombre" placeholder="Nombre del alumno" />
+      <button id="btnCrearAlumno">Crear alumno</button>
+      <button id="btnCargarAlumnos">Actualizar lista</button>
+      <ul id="alumnosList"></ul>
+    </div>
+
+    <div class="box">
+      <h3>Cursos</h3>
+      <input id="cursoNombre" placeholder="Nombre del curso" />
+      <button id="btnCrearCurso">Crear curso</button>
+      <button id="btnCargarCursos">Actualizar lista</button>
+      <ul id="cursosList"></ul>
+    </div>
+
+    <div class="box">
+      <h3>Registrar asistencia</h3>
+
+      <div>
+        <label>Alumno:</label><br />
+        <select id="selAlumno"></select>
+      </div>
+
+      <div>
+        <label>Curso:</label><br />
+        <select id="selCurso"></select>
+      </div>
+
+      <div>
+        <label>Estado:</label><br />
+        <select id="selEstado">
+          <option value="PRESENTE">PRESENTE</option>
+          <option value="AUSENTE">AUSENTE</option>
+          <option value="TARDANZA">TARDANZA</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Fecha:</label><br />
+        <input id="asistenciaFecha" type="date" />
+      </div>
+
+      <button id="btnRegistrarAsistencia">Registrar</button>
+
+      <h4>Últimas asistencias</h4>
+      <button id="btnListarAsistencias">Actualizar</button>
+      <ul id="asistenciasList"></ul>
+    </div>
+
+    <div class="box">
+      <h3>Reporte por rango (semana / cuatrimestre)</h3>
+
+      <div>
+        <label>Desde:</label><br />
+        <input id="repDesde" type="date" />
+      </div>
+      <div>
+        <label>Hasta:</label><br />
+        <input id="repHasta" type="date" />
+      </div>
+
+      <div>
+        <label>Curso (opcional):</label><br />
+        <select id="repCurso">
+          <option value="">(Todos)</option>
+        </select>
+      </div>
+
+      <button id="btnReporte">Generar reporte</button>
+      <pre id="reporteOut"></pre>
+    </div>
+
+    <div class="box">
+      <h3>Datos Externos (demo)</h3>
+      <button id="btnExternal">Consultar API externa</button>
+      <pre id="externalResponse"></pre>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
