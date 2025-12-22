@@ -174,7 +174,7 @@ document.getElementById("btnListarAsistencias").addEventListener("click", async 
   }
 });
 
-// ---- Reporte ----
+// ---- Reporte (MEJORADO: salida legible tipo tabla) ----
 document.getElementById("btnReporte").addEventListener("click", async () => {
   try {
     const desde = document.getElementById("repDesde").value;
@@ -188,11 +188,31 @@ document.getElementById("btnReporte").addEventListener("click", async () => {
 
     const data = await fetchJSON(`${API_URL}/reportes/rango?${params.toString()}`);
 
-    document.getElementById("reporteOut").textContent = JSON.stringify(
-      data,
-      null,
-      2
-    );
+    const out = document.getElementById("reporteOut");
+    const rows = data.resultados || [];
+
+    if (rows.length === 0) {
+      out.textContent = "No hay registros en ese rango.";
+      return;
+    }
+
+    let text = "";
+    text += `Rango: ${data.desde} a ${data.hasta}\n`;
+    text += `Curso: ${data.curso_id ? data.curso_id : "Todos"}\n\n`;
+
+    text += "ALUMNO | CURSO | PRESENTES | AUSENTES | TARDANZAS | TOTAL\n";
+    text += "---------------------------------------------------------\n";
+
+    rows.forEach((r) => {
+      const p = Number(r.presentes);
+      const a = Number(r.ausentes);
+      const t = Number(r.tardanzas);
+      const total = Number(r.total_registros);
+
+      text += `${r.alumno} | ${r.curso} | ${p} | ${a} | ${t} | ${total}\n`;
+    });
+
+    out.textContent = text;
   } catch (e) {
     alert(`Error: ${e.message}`);
   }
