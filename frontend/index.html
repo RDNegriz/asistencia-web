@@ -1,99 +1,259 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>Aplicación del Laboratorio</title>
-    <style>
-      body { font-family: Arial, sans-serif; margin: 40px; }
-      input, select, button { margin: 6px 0; }
-      .box { border: 1px solid #ddd; padding: 12px; margin: 12px 0; border-radius: 8px; }
-      pre { background: #f4f4f4; padding: 10px; overflow:auto; }
-      ul { margin-top: 8px; }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Asistencias</title>
 
-  <body>
-    <h1>Aplicación del Laboratorio</h1>
+  <style>
+    :root { --primario:#4a90e2; --secundario:#2ecc71; --fondo:#f0f2f5; --texto:#333; }
 
-    <div class="box">
-      <h3>Alumnos</h3>
-      <input id="alumnoNombre" placeholder="Nombre del alumno" />
-      <button id="btnCrearAlumno">Crear alumno</button>
-      <button id="btnCargarAlumnos">Actualizar lista</button>
-      <ul id="alumnosList"></ul>
+    * { box-sizing: border-box; }
+    html, body { width:100%; margin:0; padding:0; overflow-x:hidden; }
+
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      padding: 20px;
+    }
+
+    .contenedor-principal{
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .contenedor-header{
+      width: 100%;
+      text-align: center;
+      padding: 10px 0 20px 0;
+    }
+
+    .logo{
+      width: 110px;
+      height: auto;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .titulo{
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitulo{
+      margin: 6px 0 0 0;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 22px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      border: 1px solid #e7eef5;
+    }
+
+    .card h2{
+      margin: 0 0 14px 0;
+      font-size: 1.2rem;
+      color: #222;
+    }
+
+    label{
+      display:block;
+      margin: 10px 0 6px;
+      font-weight: 700;
+      color: #444;
+    }
+
+    input, select{
+      width:100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid #e2e6ea;
+      font-size: 16px;
+      outline: none;
+      background: #fff;
+    }
+    input:focus, select:focus{ border-color: rgba(74,144,226,0.6); }
+
+    .fila-botones{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    button{
+      padding: 12px 16px;
+      background: var(--secundario);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover{ background:#27ae60; transform: translateY(-1px); }
+
+    .btn-sec{
+      background: var(--primario);
+    }
+    .btn-sec:hover{
+      background: #3b7fcf;
+    }
+
+    ul{
+      list-style: none;
+      padding-left: 0;
+      margin: 12px 0 0 0;
+    }
+
+    ul li{
+      background: #f8fafc;
+      margin: 6px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #edf2f7;
+      font-size: 14px;
+    }
+
+    pre{
+      background: #f6f8fa;
+      border: 1px solid #eef2f6;
+      padding: 14px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    .nota{
+      font-size: 13px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    @media (min-width: 900px){
+      .grid{
+        grid-template-columns: 1fr 1fr;
+      }
+      .card.full{
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="contenedor-principal">
+
+    <div class="contenedor-header">
+      <!-- Poné tu logo en frontend/logo.png -->
+      <img src="logo.png" alt="Logo app" class="logo" />
+      <h1 class="titulo">CONTROL ASISTENCIA</h1>
+      <h3 class="subtitulo">EQUIPO-3</h3>
     </div>
 
-    <div class="box">
-      <h3>Cursos</h3>
-      <input id="cursoNombre" placeholder="Nombre del curso" />
-      <button id="btnCrearCurso">Crear curso</button>
-      <button id="btnCargarCursos">Actualizar lista</button>
-      <ul id="cursosList"></ul>
-    </div>
+    <div class="grid">
 
-    <div class="box">
-      <h3>Registrar asistencia</h3>
+      <!-- ALUMNOS -->
+      <div class="card">
+        <h2>👨‍🎓 Alumnos</h2>
+        <label>Nombre del alumno</label>
+        <input id="alumnoNombre" placeholder="Ej: Juan Pérez" />
+        <div class="fila-botones">
+          <button id="btnCrearAlumno">Crear alumno</button>
+          <button class="btn-sec" id="btnCargarAlumnos">Listar alumnos</button>
+        </div>
+        <ul id="alumnosList"></ul>
+      </div>
 
-      <div>
-        <label>Alumno:</label><br />
+      <!-- CURSOS -->
+      <div class="card">
+        <h2>📚 Cursos</h2>
+        <label>Nombre del curso</label>
+        <input id="cursoNombre" placeholder="Ej: Sistemas Operativos" />
+        <div class="fila-botones">
+          <button id="btnCrearCurso">Crear curso</button>
+          <button class="btn-sec" id="btnCargarCursos">Listar cursos</button>
+        </div>
+        <ul id="cursosList"></ul>
+      </div>
+
+      <!-- REGISTRO -->
+      <div class="card full">
+        <h2>🕒 Registro de asistencia</h2>
+
+        <label>👤 Alumno</label>
         <select id="selAlumno"></select>
-      </div>
 
-      <div>
-        <label>Curso:</label><br />
+        <label>📚 Curso</label>
         <select id="selCurso"></select>
-      </div>
 
-      <div>
-        <label>Estado:</label><br />
+        <label>✅ Estado</label>
         <select id="selEstado">
-          <option value="PRESENTE">PRESENTE</option>
-          <option value="AUSENTE">AUSENTE</option>
-          <option value="TARDANZA">TARDANZA</option>
+          <option value="PRESENTE">Presente</option>
+          <option value="AUSENTE">Ausente</option>
+          <option value="TARDANZA">Tardanza</option>
         </select>
+
+        <label>📅 Fecha</label>
+        <input type="date" id="asistenciaFecha" />
+
+        <div class="fila-botones">
+          <button id="btnRegistrarAsistencia">REGISTRAR ASISTENCIA</button>
+          <button class="btn-sec" id="btnListarAsistencias">Listar asistencias</button>
+        </div>
+
+        <ul id="asistenciasList"></ul>
+        <div class="nota">*Se guarda en la base de datos (no en el navegador).</div>
       </div>
 
-      <div>
-        <label>Fecha:</label><br />
-        <input id="asistenciaFecha" type="date" />
-      </div>
+      <!-- REPORTE -->
+      <div class="card full">
+        <h2>📊 Reporte de asistencias</h2>
 
-      <button id="btnRegistrarAsistencia">Registrar</button>
+        <label>Desde</label>
+        <input type="date" id="repDesde" />
 
-      <h4>Últimas asistencias</h4>
-      <button id="btnListarAsistencias">Actualizar</button>
-      <ul id="asistenciasList"></ul>
-    </div>
+        <label>Hasta</label>
+        <input type="date" id="repHasta" />
 
-    <div class="box">
-      <h3>Reporte por rango (semana / cuatrimestre)</h3>
-
-      <div>
-        <label>Desde:</label><br />
-        <input id="repDesde" type="date" />
-      </div>
-      <div>
-        <label>Hasta:</label><br />
-        <input id="repHasta" type="date" />
-      </div>
-
-      <div>
-        <label>Curso (opcional):</label><br />
+        <label>Curso (opcional)</label>
         <select id="repCurso">
-          <option value="">(Todos)</option>
+          <option value="">Todos</option>
         </select>
+
+        <div class="fila-botones">
+          <button id="btnReporte">Generar reporte</button>
+        </div>
+
+        <pre id="reporteOut"></pre>
       </div>
 
-      <button id="btnReporte">Generar reporte</button>
-      <pre id="reporteOut"></pre>
-    </div>
+      <!-- API EXTERNA -->
+      <div class="card full">
+        <h2>🌐 API Externa (demo)</h2>
+        <div class="fila-botones">
+          <button class="btn-sec" id="btnExternal">Consultar API externa</button>
+        </div>
+        <pre id="externalResponse"></pre>
+      </div>
 
-    <div class="box">
-      <h3>Datos Externos (demo)</h3>
-      <button id="btnExternal">Consultar API externa</button>
-      <pre id="externalResponse"></pre>
     </div>
+  </div>
 
-    <script src="app.js"></script>
-  </body>
+  <script src="app.js"></script>
+</body>
 </html>
